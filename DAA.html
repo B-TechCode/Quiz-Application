@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <nav>
+        <h1>Design and Analysis of Algorithm</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="Feedback.html">Feedback</a></li>
+        </ul>
+    </nav>
+    <div class="main">
+        <div id="box">
+            <h2 id="qbox">1) This is a Dummy question</h2>
+            <div id="option1" class="option" onclick="selectOption('a')">Option 1</div>
+            <div id="option2" class="option" onclick="selectOption('b')">Option 2</div>
+            <div id="option3" class="option" onclick="selectOption('c')">Option 3</div>
+            <div id="option4" class="option" onclick="selectOption('d')">Option 4</div>
+            <p style="color:red" class="timer">Quiz Time Left: <span id="quizTimeLeft">200</span>s</p>
+            <button class="btn" id="prevBtn" onclick="prevQuestion()">Prev</button>
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+            <button class="btn" id="skipBtn" onclick="skipQuestion()">Skip</button>
+        </div>
+        <button class="btn" id="submitBtn" onclick="submitQuiz()">Submit</button>
+    </div>
+
+    <div id="palette">
+        <h3>Question Palette</h3>
+        <p>Marked: <span id="markedCount">0</span></p>
+        <p>Remaining: <span id="remainingCount">9</span></p>
+    </div>
+
+    <footer>
+        <p>This quiz covers basics of Data Structure.</p>
+    </footer>
+
+    <script>
+        const questions = [
+        {
+        'Que': 'What is the time complexity of binary search in the worst case?',
+        'a': 'O(n)',
+        'b': 'O(log n)',
+        'c': 'O(n^2)',
+        'd': 'O(1)',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which algorithm is used for finding the shortest path in a weighted graph?',
+        'a': 'Prim’s Algorithm',
+        'b': 'Dijkstra’s Algorithm',
+        'c': 'Kruskal’s Algorithm',
+        'd': 'Floyd-Warshall Algorithm',
+        'correct': 'b'
+    },
+    {
+        'Que': 'What is the average case time complexity of quicksort?',
+        'a': 'O(n log n)',
+        'b': 'O(n^2)',
+        'c': 'O(n)',
+        'd': 'O(log n)',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which of the following sorting algorithms has the worst-case time complexity of O(n log n)?',
+        'a': 'QuickSort',
+        'b': 'MergeSort',
+        'c': 'HeapSort',
+        'd': 'All of the above',
+        'correct': 'd'
+    },
+    {
+        'Que': 'Which algorithm is best suited for finding the Minimum Spanning Tree?',
+        'a': 'Dijkstra’s Algorithm',
+        'b': 'Prim’s Algorithm',
+        'c': 'Bellman-Ford Algorithm',
+        'd': 'A* Algorithm',
+        'correct': 'b'
+    },
+    {
+        'Que': 'What is the space complexity of the Merge Sort algorithm?',
+        'a': 'O(1)',
+        'b': 'O(n)',
+        'c': 'O(log n)',
+        'd': 'O(n log n)',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which data structure is used in the implementation of a Breadth-First Search (BFS)?',
+        'a': 'Stack',
+        'b': 'Queue',
+        'c': 'Priority Queue',
+        'd': 'Graph',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which sorting algorithm is considered the fastest in practice for large datasets?',
+        'a': 'Bubble Sort',
+        'b': 'Selection Sort',
+        'c': 'QuickSort',
+        'd': 'Insertion Sort',
+        'correct': 'c'
+    },
+    {
+        'Que': 'Which of the following algorithms follows a Divide and Conquer approach?',
+        'a': 'Merge Sort',
+        'b': 'QuickSort',
+        'c': 'Binary Search',
+        'd': 'All of the above',
+        'correct': 'd'
+    },
+    {
+        'Que': 'Which algorithm is used for cycle detection in a directed graph?',
+        'a': 'DFS (Depth First Search)',
+        'b': 'BFS (Breadth First Search)',
+        'c': 'Dijkstra’s Algorithm',
+        'd': 'Floyd-Warshall Algorithm',
+        'correct': 'a'
+    },
+    {
+        'Que': 'What is the best case time complexity of QuickSort?',
+        'a': 'O(n)',
+        'b': 'O(n log n)',
+        'c': 'O(n^2)',
+        'd': 'O(log n)',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which of the following is an in-place sorting algorithm?',
+        'a': 'Merge Sort',
+        'b': 'QuickSort',
+        'c': 'HeapSort',
+        'd': 'Both QuickSort and HeapSort',
+        'correct': 'd'
+    },
+    {
+        'Que': 'Which algorithm is best suited for finding the longest common subsequence?',
+        'a': 'Kruskal’s Algorithm',
+        'b': 'Dynamic Programming',
+        'c': 'Bellman-Ford Algorithm',
+        'd': 'Floyd-Warshall Algorithm',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which of the following algorithms is NOT a greedy algorithm?',
+        'a': 'Dijkstra’s Algorithm',
+        'b': 'Huffman Coding',
+        'c': 'Bellman-Ford Algorithm',
+        'd': 'Prim’s Algorithm',
+        'correct': 'c'
+    },
+    {
+        'Que': 'What is the time complexity of the Bellman-Ford Algorithm?',
+        'a': 'O(n log n)',
+        'b': 'O(n^2)',
+        'c': 'O(VE)',
+        'd': 'O(log n)',
+        'correct': 'c'
+    },
+    {
+        'Que': 'Which of the following algorithms is used for topological sorting?',
+        'a': 'Dijkstra’s Algorithm',
+        'b': 'Kahn’s Algorithm',
+        'c': 'Bellman-Ford Algorithm',
+        'd': 'Prim’s Algorithm',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which searching algorithm is best suited for unbounded search spaces?',
+        'a': 'Linear Search',
+        'b': 'Binary Search',
+        'c': 'Exponential Search',
+        'd': 'Jump Search',
+        'correct': 'c'
+    },
+    {
+        'Que': 'Which algorithm is used for finding articulation points in a graph?',
+        'a': 'Dijkstra’s Algorithm',
+        'b': 'Tarjan’s Algorithm',
+        'c': 'Prim’s Algorithm',
+        'd': 'Bellman-Ford Algorithm',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which algorithm is used for detecting negative weight cycles in a graph?',
+        'a': 'Dijkstra’s Algorithm',
+        'b': 'Floyd-Warshall Algorithm',
+        'c': 'Bellman-Ford Algorithm',
+        'd': 'Kruskal’s Algorithm',
+        'correct': 'c'
+    },
+    {
+        'Que': 'Which of the following problems is solved using dynamic programming?',
+        'a': '0/1 Knapsack Problem',
+        'b': 'Longest Common Subsequence',
+        'c': 'Fibonacci Sequence',
+        'd': 'All of the above',
+        'correct': 'd'
+    }
+        ];
+
+        let randomizedQuestions = questions.sort(() => Math.random() - 0.5).slice(0, 10); // Randomize and select 10 questions
+        let index = 0;
+        let total = randomizedQuestions.length;
+        let selectedAnswers = {};
+        let quizTimer;
+        let totalTime = 200; // Total time for the quiz in seconds
+
+        const qbox = document.getElementById('qbox');
+        const quizTimeLeftElem = document.getElementById('quizTimeLeft');
+        const markedCountElem = document.getElementById('markedCount');
+        const remainingCountElem = document.getElementById('remainingCount');
+
+        const loadQuestion = () => {
+            resetOptions();
+            let data = randomizedQuestions[index];
+            qbox.innerText = `${index + 1}) ${data.Que}`;
+            document.getElementById('option1').innerText = data.a;
+            document.getElementById('option2').innerText = data.b;
+            document.getElementById('option3').innerText = data.c;
+            document.getElementById('option4').innerText = data.d;
+
+            if (selectedAnswers[index]) {
+                selectOption(selectedAnswers[index]);
+            }
+            updatePalette();
+        };
+
+        const nextQuestion = () => {
+            if (index < total - 1) {
+                index++;
+                loadQuestion();
+            }
+        };
+
+        const prevQuestion = () => {
+            if (index > 0) {
+                index--;
+                loadQuestion();
+            }
+        };
+
+        const skipQuestion = () => {
+            if (index < total - 1) {
+                index++;
+                loadQuestion();
+            }
+        };
+
+        const selectOption = (option) => {
+            resetOptions();
+            selectedAnswers[index] = option;
+            document.getElementById(`option${option.charCodeAt(0) - 96}`).classList.add('selected');
+            updatePalette();
+        };
+
+        const resetOptions = () => {
+            document.querySelectorAll('.option').forEach(option => option.classList.remove('selected'));
+        };
+
+        const submitQuiz = () => {
+            clearInterval(quizTimer);
+            let correct = 0;
+            let resultHTML = `<h3>Quiz Completed!</h3><h4>You scored ${correct} / ${total}.</h4><br><h3>Correct Answers:</h3>`;
+            randomizedQuestions.forEach((q, i) => {
+                const userAnswer = selectedAnswers[i];
+                const isCorrect = userAnswer === q.correct;
+                if (isCorrect) correct++;
+                resultHTML += `<p>Q${i + 1}: ${q.Que}<br>Your Answer: ${userAnswer || 'Not Attempted'}<br>Correct Answer: ${q.correct}</p>`;
+            });
+            resultHTML += `<br>`;
+            document.getElementById("box").innerHTML = resultHTML;
+        };
+
+        const startQuizTimer = () => {
+            quizTimer = setInterval(() => {
+                totalTime--;
+                quizTimeLeftElem.innerText = totalTime;
+                if (totalTime === 0) {
+                    clearInterval(quizTimer);
+                    submitQuiz();
+                }
+            }, 1000);
+        };
+
+        const updatePalette = () => {
+            const marked = Object.keys(selectedAnswers).length;
+            markedCountElem.innerText = marked;
+            remainingCountElem.innerText = total - marked;
+        };
+
+        // Initialize quiz
+        loadQuestion();
+        startQuizTimer();
+    </script>
+</body>
+</html>

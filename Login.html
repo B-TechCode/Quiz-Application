@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .login-container {
+            background: white;
+            padding: 30px;
+            width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 5px rgba(118, 75, 162, 0.5);
+        }
+
+        .input-group label {
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            font-size: 14px;
+            color: #999;
+            transition: 0.3s ease-in-out;
+            pointer-events: none;
+        }
+
+        .input-group input:focus + label,
+        .input-group input:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 10px;
+            font-size: 12px;
+            color: #764ba2;
+            background: white;
+            padding: 0 5px;
+        }
+
+        .input-box {
+    position: relative;
+    margin-bottom: 15px;
+    text-align: left;
+    
+}
+
+.input-box label {
+    color: black;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid black;
+    border-radius: 5px;
+    color: black;
+    outline: none;
+    margin-top: 5px;
+    
+}
+
+.input-box .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 30px;
+    cursor: pointer;
+    color: black;
+    
+    
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 10px;
+    
+}
+
+.options a {
+    color: black;
+    text-decoration: none;
+    
+}
+
+
+        .forgot-password {
+            text-align: right;
+            display: block;
+            font-size: 14px;
+            color: #764ba2;
+            text-decoration: none;
+            margin-bottom: 15px;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background: #764ba2;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .login-btn a {
+        text-decoration: none;
+        color: white;
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: auto;
+        }
+
+        .login-btn:hover {
+            background: #5a3c91;
+        }
+
+        .register {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .register a {
+            color: #764ba2;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="login-container">
+        <h2>Login</h2>
+        
+        <div class="input-box">
+            <label for="username">User Name</label>
+            <input type="text" id="username" placeholder="Enter your User Name" required>
+        </div>
+        <div class="input-box">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <span class="toggle-password" onclick="togglePassword()">👁️</span>
+        </div>
+        <div class="options">
+            <label><input type="checkbox"> Save Password</label>
+            <a style="color:#764ba2" href="Forgot_Password.html" class="forgot-password">Forgot Password?</a>
+        </div>
+    
+        <button class="login-btn" onclick="validateLogin()">Login</button>
+    
+        <p class="register">Don't have an account? <a href="Registration.html">Sign Up</a></p>
+    </div>
+    
+    <script>
+        function togglePassword() {
+            var passwordInput = document.getElementById("password");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        }
+    
+        function validateLogin() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+    
+            if (!username || !password) {
+                alert("Please enter both username and password.");
+                return; 
+            }
+    
+            
+            window.location.href = "Home.html";
+        }
+    </script>
+</body>
+</html>

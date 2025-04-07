@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz Platform</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to QuizMaster</h1>
+        <br>        
+    </header>
+    <div class="container">        
+        <aside class="sidebar">
+            <h3>Select Field</h3>
+            <ul>
+                <li><a href="DataStructure.html">Data Structure</a></li>
+                <li><a href="Java.html">Java</a></li>
+                <li><a href="DAA.html">Design and Analysis of Algorithm</a></li>
+                <li><a href="WebD.html">Web Development</a></li>
+                <li><a href="EthicalHacking.html">Ethical Hacking</a></li>
+                <li><a href="DBMS.html">DBMS</a></li>
+                <li><a href="AI.html">Artificial Intelligence</a></li>                
+            </ul>
+        </aside>        
+        <div class="slider-container">
+            <div class="slides">
+                <img src="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20230706095706/intro-data-structure-%E2%80%93-1.png" class="slide active">
+                <img src="https://www.softwebsolutions.com/wp-content/uploads/2023/08/Java-enterprise-solutions.jpg" class="slide">
+                <img src="https://files.codingninjas.in/article_images/design-and-analysis-of-algorithms-0-1666549021.webp" class="slide">
+                <img src="https://www.techden.in/uploads/images/2024-08-28-11/b0121a3b8d8790f12b405f4e3493b14b.jpg" class="slide">
+                <img src="https://media.istockphoto.com/id/958989154/photo/ethical-hacking-concept-with-faceless-hooded-male-person.jpg?s=612x612&w=0&k=20&c=UqweFHES7NkxiFVws2Pz6QrswGrGvjYBumuS3zFMBCA="  class="slide">
+                <img src="https://png.pngtree.com/png-vector/20220519/ourmid/pngtree-database-administrator-dbms-software-data-center-admin-secure-system-vector-png-image_46356680.jpg" class="slide">
+                <img src="https://emarsys.com/app/uploads/2020/03/real-ai.jpg" class="slide">
+            </div>      
+            <div class="controls">
+                <button onclick="prevSlide()">&#10094;</button>
+                <button onclick="nextSlide()">&#10095;</button>
+            </div>
+            <div class="dots"></div>
+        </div>
+        
+    </div> 
+    <footer>
+        <p>&copy; 2025 QuizMaster. All Rights Reserved.</p>
+        <p>Your one-stop platform for learning and testing your knowledge with exciting quizzes on various subjects.</p>
+      
+        <ul>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+        </ul>
+    </footer>
+    
+    <script>
+
+const slide = document.querySelectorAll(".slide");
+
+
+
+        let currentIndex = 0;
+        let slides = document.querySelectorAll(".slide");
+        let dotsContainer = document.querySelector(".dots");
+        let autoSlideInterval;
+        const slideInterval = 3000;        
+        slides.forEach((_, index) => {
+            let dot = document.createElement("span");
+            dot.classList.add("dot");
+            if (index === 0) dot.classList.add("active");
+            dot.addEventListener("click", () => goToSlide(index));
+            dotsContainer.appendChild(dot);
+        });
+        let dots = document.querySelectorAll(".dot");
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle("active", i === index);
+                dots[i].classList.toggle("active", i === index);
+            });
+            currentIndex = index;
+        }
+        function nextSlide() {
+            let newIndex = (currentIndex + 1) % slides.length;
+            showSlide(newIndex);
+        }
+        function prevSlide() {
+            let newIndex = (currentIndex - 1 + slides.length) % slides.length;
+            showSlide(newIndex);
+        }
+        function goToSlide(index) {
+            showSlide(index);
+        }
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, slideInterval);
+        }
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+        startAutoSlide();
+        document.querySelector(".slider-container").addEventListener("mouseenter", stopAutoSlide);
+        document.querySelector(".slider-container").addEventListener("mouseleave", startAutoSlide);
+    </script>
+</body>
+</html>

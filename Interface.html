@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Master - Take a Quiz</title>
+    <link rel="stylesheet" href="Interface.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">Quiz Master</div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="Login.html">Login</a></li>
+                    <li><a href="Registration.html">Register</a></li>
+                    <li><a href="FeedBack.html">Feedback</a></li>
+                    
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Join a Live Quiz and Test Your Knowledge</h1>
+                <p>
+                    Enter a quiz code to join a live session, answer questions in real-time, 
+                    and see your live performance. <br>
+                    <br>Fun, interactive, and engaging!
+                </p>
+                <div class="quiz-code-input">
+                    <input type="text" placeholder="Enter Quiz Code : 1234">
+                    <button onclick="joinQuiz()">Demo Quiz</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src=".\img.png" alt="Quiz Image">
+            </div>
+        </section>
+
+       
+        <section class="features">
+            <h2>Why Participate in Quiz Master?</h2>
+            <div class="feature-cards">
+                <div class="card">
+                    <h3>Real-Time Interaction</h3>
+                    <p>Answer questions live and see instant results.</p>
+                </div>
+                <div class="card">
+                    <h3>Stay ahead of friends</h3>
+                    <p>Showcase your knowledge to you friends directly in exam.</p>
+                </div>
+                <div class="card">
+                    <h3>Learn and Have Fun</h3>
+                    <p>Test your knowledge on a variety of topics.</p>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="cta">
+            <h2>Ready to Join a Quiz?</h2>
+            <button onclick="login()">Login Now</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Quiz Master. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function joinQuiz() {
+            const quizCode = document.querySelector('.quiz-code-input input').value;
+            if (quizCode === "1234") { 
+                alert("Joining Data Structure Quiz...");
+                
+                window.location.href = "DataStructure.html";
+            } else {
+                alert("Invalid quiz code. Please try again!");
+            }
+        }
+
+        function login() {
+            alert("Redirecting to login...");
+            
+            window.location.href = "Login.html";
+        }
+    </script>
+</body>
+</html>

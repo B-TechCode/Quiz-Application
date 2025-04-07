@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <nav>
+        <h1>Artificial Intelligence</h1>
+        <ul>
+            <li><a href="Home.html">Home</a></li>
+            <li><a href="FeedBack.html">Feedback</a></li>
+        </ul>
+    </nav>
+    <div class="main">
+        <div id="box">
+            <h2 id="qbox">1) This is a Dummy question</h2>
+            <div id="option1" class="option" onclick="selectOption('a')">Option 1</div>
+            <div id="option2" class="option" onclick="selectOption('b')">Option 2</div>
+            <div id="option3" class="option" onclick="selectOption('c')">Option 3</div>
+            <div id="option4" class="option" onclick="selectOption('d')">Option 4</div>
+            <p style="color:red" class="timer">Quiz Time Left: <span id="quizTimeLeft">200</span>s</p>
+            <button class="btn" id="prevBtn" onclick="prevQuestion()">Prev</button>
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+            <button class="btn" id="skipBtn" onclick="skipQuestion()">Skip</button>
+        </div>
+        <button class="btn" id="submitBtn" onclick="submitQuiz()">Submit</button>
+    </div>
+
+    <div id="palette">
+        <h3>Question Palette</h3>
+        <p>Marked: <span id="markedCount">0</span></p>
+        <p>Remaining: <span id="remainingCount">9</span></p>
+    </div>
+
+    <footer>
+        <p>This quiz covers basics of Artificial Intelligence.</p>
+    </footer>
+
+    <script>
+        const questions = [
+        {
+        'Que': 'What is the primary goal of ethical hacking?',
+        'a': 'To create viruses',
+        'b': 'To secure systems',
+        'c': 'To hack into government sites',
+        'd': 'To steal sensitive data',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which of the following is NOT a phase of ethical hacking?',
+        'a': 'Reconnaissance',
+        'b': 'Scanning',
+        'c': 'Exploitation',
+        'd': 'Destruction',
+        'correct': 'd'
+    },
+    {
+        'Que': 'Which tool is commonly used for network scanning?',
+        'a': 'Wireshark',
+        'b': 'Metasploit',
+        'c': 'Nmap',
+        'd': 'Burp Suite',
+        'correct': 'c'
+    },
+    {
+        'Que': 'What does SQL Injection target?',
+        'a': 'Operating System',
+        'b': 'Databases',
+        'c': 'Firewalls',
+        'd': 'Network Devices',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which type of hacker is known as an ethical hacker?',
+        'a': 'White Hat',
+        'b': 'Black Hat',
+        'c': 'Grey Hat',
+        'd': 'Script Kiddie',
+        'correct': 'a'
+    },
+    {
+        'Que': 'What does a penetration test aim to identify?',
+        'a': 'System speed',
+        'b': 'Network traffic',
+        'c': 'Security vulnerabilities',
+        'd': 'Legal compliance',
+        'correct': 'c'
+    },
+    {
+        'Que': 'Which technique is used to crack passwords?',
+        'a': 'SQL Injection',
+        'b': 'Brute Force Attack',
+        'c': 'DDoS Attack',
+        'd': 'Ping of Death',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which protocol is used to encrypt web traffic?',
+        'a': 'HTTP',
+        'b': 'FTP',
+        'c': 'SSL/TLS',
+        'd': 'ICMP',
+        'correct': 'c'
+    },
+    {
+        'Que': 'What is social engineering?',
+        'a': 'A programming language',
+        'b': 'A type of network',
+        'c': 'Manipulating people to disclose confidential information',
+        'd': 'A security software',
+        'correct': 'c'
+    },
+    {
+        'Que': 'Which of these is a common wireless attack?',
+        'a': 'ARP Spoofing',
+        'b': 'Ping of Death',
+        'c': 'Phishing',
+        'd': 'SQL Injection',
+        'correct': 'a'
+    },
+    {
+        'Que': 'What does a firewall do?',
+        'a': 'Detects malware',
+        'b': 'Filters incoming and outgoing network traffic',
+        'c': 'Encrypts files',
+        'd': 'Manages databases',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which of these is an example of malware?',
+        'a': 'Trojan Horse',
+        'b': 'HTTP',
+        'c': 'DNS',
+        'd': 'MAC Address',
+        'correct': 'a'
+    },
+    {
+        'Que': 'What is phishing?',
+        'a': 'An attack on databases',
+        'b': 'Tricking people into providing personal information',
+        'c': 'A type of firewall',
+        'd': 'Scanning for vulnerabilities',
+        'correct': 'b'
+    },
+    {
+        'Que': 'What is a VPN used for?',
+        'a': 'Blocking malware',
+        'b': 'Encrypting internet traffic and hiding IP addresses',
+        'c': 'Managing passwords',
+        'd': 'Accessing databases',
+        'correct': 'b'
+    },
+    {
+        'Que': 'What does the term "Zero-Day Vulnerability" mean?',
+        'a': 'A vulnerability discovered on the first day of an attack',
+        'b': 'A vulnerability unknown to the software vendor',
+        'c': 'A patched security hole',
+        'd': 'A security update',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which of these is an example of an insider threat?',
+        'a': 'A hacker from another country',
+        'b': 'An employee leaking confidential data',
+        'c': 'A brute force attack',
+        'd': 'A DDoS attack',
+        'correct': 'b'
+    },
+    {
+        'Que': 'What is a botnet?',
+        'a': 'A collection of compromised computers controlled remotely',
+        'b': 'A security software',
+        'c': 'A type of VPN',
+        'd': 'A network of firewalls',
+        'correct': 'a'
+    },
+    {
+        'Que': 'What is the purpose of ethical hacking certifications like CEH?',
+        'a': 'To promote illegal hacking',
+        'b': 'To verify ethical hacking skills',
+        'c': 'To disable firewalls',
+        'd': 'To sell exploits',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which programming language is commonly used for ethical hacking?',
+        'a': 'Python',
+        'b': 'HTML',
+        'c': 'CSS',
+        'd': 'Excel',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which of the following is a web application vulnerability?',
+        'a': 'Cross-Site Scripting (XSS)',
+        'b': 'ARP Spoofing',
+        'c': 'DDoS Attack',
+        'd': 'SQL Injection',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which method is commonly used to maintain access after compromising a system?',
+        'a': 'SQL Injection',
+        'b': 'Backdoor',
+        'c': 'Phishing',
+        'd': 'ARP Spoofing',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which type of malware disguises itself as legitimate software?',
+        'a': 'Worm',
+        'b': 'Trojan Horse',
+        'c': 'Ransomware',
+        'd': 'Rootkit',
+        'correct': 'b'
+    },
+    {
+        'Que': 'What does a keylogger do?',
+        'a': 'Records keystrokes',
+        'b': 'Deletes files',
+        'c': 'Encrypts data',
+        'd': 'Scans for vulnerabilities',
+        'correct': 'a'
+    },
+    {
+        'Que': 'What is the primary goal of a Denial of Service (DoS) attack?',
+        'a': 'To steal passwords',
+        'b': 'To make a system unavailable',
+        'c': 'To gain remote access',
+        'd': 'To install malware',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which attack exploits human psychology rather than technical vulnerabilities?',
+        'a': 'Buffer Overflow',
+        'b': 'Phishing',
+        'c': 'SQL Injection',
+        'd': 'Brute Force Attack',
+        'correct': 'b'
+    },
+    {
+        'Que': 'What is an example of a cryptographic attack?',
+        'a': 'Man-in-the-Middle',
+        'b': 'Dictionary Attack',
+        'c': 'Ping of Death',
+        'd': 'Privilege Escalation',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which protocol is commonly targeted in Man-in-the-Middle attacks?',
+        'a': 'HTTPS',
+        'b': 'ARP',
+        'c': 'SSH',
+        'd': 'SNMP',
+        'correct': 'b'
+    },
+    {
+        'Que': 'What does the term "sandboxing" refer to in cybersecurity?',
+        'a': 'A secure environment for testing',
+        'b': 'A method for cracking passwords',
+        'c': 'A firewall technique',
+        'd': 'A network attack',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which type of hacker works without malicious intent but may violate rules?',
+        'a': 'White Hat',
+        'b': 'Black Hat',
+        'c': 'Grey Hat',
+        'd': 'Script Kiddie',
+        'correct': 'c'
+    },
+    {
+        'Que': 'Which of the following is a method of hiding malicious code in a legitimate process?',
+        'a': 'SQL Injection',
+        'b': 'Process Injection',
+        'c': 'ARP Spoofing',
+        'd': 'Brute Force Attack',
+        'correct': 'b'
+    },
+    {
+        'Que': 'What is the primary purpose of steganography in cybersecurity?',
+        'a': 'Encrypting data',
+        'b': 'Hiding information within other files',
+        'c': 'Detecting vulnerabilities',
+        'd': 'Scanning networks',
+        'correct': 'b'
+    },
+    {
+        'Que': 'What is the main characteristic of ransomware?',
+        'a': 'Stealing credit card information',
+        'b': 'Encrypting files and demanding payment',
+        'c': 'Spying on users',
+        'd': 'Deleting system logs',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which cybersecurity principle ensures that data is only accessed by authorized users?',
+        'a': 'Confidentiality',
+        'b': 'Integrity',
+        'c': 'Availability',
+        'd': 'Authentication',
+        'correct': 'a'
+    },
+    {
+        'Que': 'What is the main goal of an Advanced Persistent Threat (APT)?',
+        'a': 'Quick financial gain',
+        'b': 'Long-term, covert infiltration',
+        'c': 'Crashing websites',
+        'd': 'Defacing web pages',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which of these is an example of privilege escalation?',
+        'a': 'A regular user gaining admin rights',
+        'b': 'A hacker scanning a network',
+        'c': 'A system crash due to malware',
+        'd': 'An employee using a VPN',
+        'correct': 'a'
+    },
+    {
+        'Que': 'What does an Intrusion Detection System (IDS) do?',
+        'a': 'Prevents all cyber attacks',
+        'b': 'Monitors network traffic for suspicious activity',
+        'c': 'Blocks unauthorized users',
+        'd': 'Encrypts sensitive data',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which technique is used to evade detection by security systems?',
+        'a': 'Obfuscation',
+        'b': 'Brute Force Attack',
+        'c': 'SQL Injection',
+        'd': 'ARP Spoofing',
+        'correct': 'a'
+    },
+    {
+        'Que': 'What is the purpose of a honeypot in cybersecurity?',
+        'a': 'To attract and monitor attackers',
+        'b': 'To block network traffic',
+        'c': 'To encrypt sensitive data',
+        'd': 'To patch vulnerabilities',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which type of attack involves sending massive amounts of data to overwhelm a system?',
+        'a': 'Brute Force',
+        'b': 'DDoS',
+        'c': 'SQL Injection',
+        'd': 'Phishing',
+        'correct': 'b'
+    },
+    {
+        'Que': 'What is a rainbow table attack used for?',
+        'a': 'Intercepting network traffic',
+        'b': 'Cracking hashed passwords',
+        'c': 'Exploiting databases',
+        'd': 'Gaining unauthorized access',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which security model is used to control access based on clearance levels?',
+        'a': 'Bell-LaPadula Model',
+        'b': 'OSPF Model',
+        'c': 'OSI Model',
+        'd': 'Kerberos Model',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which of these can help prevent buffer overflow attacks?',
+        'a': 'Input validation',
+        'b': 'Using weak passwords',
+        'c': 'Disabling firewalls',
+        'd': 'Using open Wi-Fi networks',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which cyber attack involves tricking a DNS server into redirecting traffic?',
+        'a': 'SQL Injection',
+        'b': 'DNS Spoofing',
+        'c': 'Brute Force Attack',
+        'd': 'DDoS Attack',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which of the following is an example of an exploit?',
+        'a': 'A security patch',
+        'b': 'A vulnerability scanner',
+        'c': 'A piece of code used to take advantage of a flaw',
+        'd': 'A firewall rule',
+        'correct': 'c'
+    },
+    {
+        'Que': 'What is the purpose of penetration testing?',
+        'a': 'To verify the security of a system',
+        'b': 'To hack into government databases',
+        'c': 'To steal passwords',
+        'd': 'To spread malware',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which attack exploits vulnerabilities in web browsers?',
+        'a': 'Cross-Site Scripting (XSS)',
+        'b': 'DDoS',
+        'c': 'Phishing',
+        'd': 'Social Engineering',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which attack tricks a user into clicking on an invisible element?',
+        'a': 'Clickjacking',
+        'b': 'DDoS Attack',
+        'c': 'Brute Force Attack',
+        'd': 'Phishing',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which of the following is an example of spyware?',
+        'a': 'Keylogger',
+        'b': 'Trojan Horse',
+        'c': 'Ransomware',
+        'd': 'Virus',
+        'correct': 'a'
+    }
+        ];
+
+        let randomizedQuestions = questions.sort(() => Math.random() - 0.5).slice(0, 10); // Randomize and select 10 questions
+        let index = 0;
+        let total = randomizedQuestions.length;
+        let selectedAnswers = {};
+        let quizTimer;
+        let totalTime = 200; // Total time for the quiz in seconds
+
+        const qbox = document.getElementById('qbox');
+        const quizTimeLeftElem = document.getElementById('quizTimeLeft');
+        const markedCountElem = document.getElementById('markedCount');
+        const remainingCountElem = document.getElementById('remainingCount');
+
+        const loadQuestion = () => {
+            resetOptions();
+            let data = randomizedQuestions[index];
+            qbox.innerText = ${index + 1}) ${data.Que};
+            document.getElementById('option1').innerText = data.a;
+            document.getElementById('option2').innerText = data.b;
+            document.getElementById('option3').innerText = data.c;
+            document.getElementById('option4').innerText = data.d;
+
+            if (selectedAnswers[index]) {
+                selectOption(selectedAnswers[index]);
+            }
+            updatePalette();
+        };
+
+        const nextQuestion = () => {
+            if (index < total - 1) {
+                index++;
+                loadQuestion();
+            }
+        };
+
+        const prevQuestion = () => {
+            if (index > 0) {
+                index--;
+                loadQuestion();
+            }
+        };
+
+        const skipQuestion = () => {
+            if (index < total - 1) {
+                index++;
+                loadQuestion();
+            }
+        };
+
+        const selectOption = (option) => {
+            resetOptions();
+            selectedAnswers[index] = option;
+            document.getElementById(option${option.charCodeAt(0) - 96}).classList.add('selected');
+            updatePalette();
+        };
+
+        const resetOptions = () => {
+            document.querySelectorAll('.option').forEach(option => option.classList.remove('selected'));
+        };
+
+        const submitQuiz = () => {
+            clearInterval(quizTimer);
+            let correct = 0;
+            let resultHTML = <h3>Quiz Completed!</h3><h4>You scored ${correct} / ${total}.</h4><br><h3>Correct Answers:</h3>;
+            randomizedQuestions.forEach((q, i) => {
+                const userAnswer = selectedAnswers[i];
+                const isCorrect = userAnswer === q.correct;
+                if (isCorrect) correct++;
+                resultHTML += <p>Q${i + 1}: ${q.Que}<br>Your Answer: ${userAnswer || 'Not Attempted'}<br>Correct Answer: ${q.correct}</p>;
+            });
+            resultHTML += <br>;
+            document.getElementById("box").innerHTML = resultHTML;
+        };
+
+        const startQuizTimer = () => {
+            quizTimer = setInterval(() => {
+                totalTime--;
+                quizTimeLeftElem.innerText = totalTime;
+                if (totalTime === 0) {
+                    clearInterval(quizTimer);
+                    submitQuiz();
+                }
+            }, 1000);
+        };
+
+        const updatePalette = () => {
+            const marked = Object.keys(selectedAnswers).length;
+            markedCountElem.innerText = marked;
+            remainingCountElem.innerText = total - marked;
+        };
+
+        // Initialize quiz
+        loadQuestion();
+        startQuizTimer();
+    </script>
+</body>
+</html>

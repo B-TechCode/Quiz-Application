@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #3b5998;
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        form {
+            max-width: 700px;
+            margin: auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        form:hover {
+            transform: scale(1.02);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border: 1px solid #3b5998;
+            box-shadow: 0 0 8px rgba(59, 89, 152, 0.2);
+        }
+
+        .form-group input[type="file"] {
+            padding: 0;
+        }
+
+        .form-group .gender,
+        .form-group .hobbies {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-group .gender input,
+        .form-group .hobbies input {
+            width: auto;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            background-color: #3b5998;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2f477a;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        @media (max-width: 600px) {
+            form {
+                padding: 20px;
+            }
+
+            .buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 28px;
+            }
+
+            body {
+                padding: 10px;
+            }
+        }
+
+        
+        body {
+            background-image: linear-gradient(to right, #eef2f3, #8e9eab);
+        }
+
+        .form-group select {
+            appearance: none;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNiIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDExIDYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMS4yMjRMNS41IDEuMThMMTAuMDEgMS4yMjMiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48L3N2Zz4=') no-repeat right 10px center;
+            background-size: 10px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        
+        input, select, textarea {
+            transition: all 0.3s ease-in-out;
+        }
+
+        input:hover, select:hover, textarea:hover {
+            border-color: #3b5998;
+        }
+    </style>
+</head>
+
+<body>
+    <h1><b>Register</b></h1>
+    <form id="registrationForm" onsubmit="submitForm(event)">
+        <div class="form-group">
+            <label for="name"><b>Name:</b></label>
+            <input type="text" id="name" name="name" placeholder="Write your full Name" required>
+        </div>
+        <div class="form-group">
+            <label for="user name"><b>User Name:</b></label>
+            <input type="text" id="User Name" name="User Name" placeholder="User name should contain both alphabet and number" required>
+        </div>
+        <div class="form-group">
+            <label for="University Name"><b>University Name:</b></label>
+            <input type="text" id="University Name" name="University Name" placeholder="Write your university name" required>
+        </div>
+        <div class="form-group">
+            <label for="registration-number"><b>Registration Number:</b></label>
+            <input type="text" id="registration-number" name="registration-number" placeholder="Your college ID number" required>
+        </div>
+        <div class="form-group">
+            <label for="password"><b>Create Password:</b></label>
+            <input type="password" id="password" name="password" placeholder="Create your password" required>
+        </div>
+        <div class="form-group">
+            <label for="re-password"><b>Re-enter the password:</b></label>
+            <input type="password" id="re-password" name="re-password" placeholder="Re-enter your password" required>
+        </div>
+        <div class="form-group">
+            <label><b>Gender:</b></label>
+            <div class="gender">
+                <label><input type="radio" name="gender" value="male" required> Male</label>
+                <label><input type="radio" name="gender" value="female" required> Female</label>
+                <label><input type="radio" name="gender" value="other" required> Other</label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="dob"><b>Date of Birth:</b></label>
+            <input type="date" id="dob" name="dob" required>
+        </div>
+        <div class="form-group">
+            <label for="permanent-address"><b>Permanent Address:</b></label>
+            <textarea id="permanent-address" name="permanent-address" rows="3" placeholder="Write your full address" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="temporary-address"><b>Temporary Address:</b></label>
+            <textarea id="temporary-address" name="temporary-address" placeholder="Write your full address" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="courses"><b>Courses:</b></label>
+            <select id="courses" name="courses" required>
+                <option value="select the course">Select the course:</option>
+                <option value="B.Tech">B.Tech</option>
+                <option value="Diploma">Diploma</option>
+                <option value="Pharmacy">Pharmacy</option>
+                <option value="B.Commerce">B.Commerce</option>
+                <option value="B.Ed">B.E.d</option>
+                <option value="B.Arch">B.Arch</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="Branchs"><b>Branchs:</b></label>
+            <select id="Branchs" name="Branchs" required>
+                <option value="select the branch">Select the branch</option>
+                <option value="CSE">CSE</option>
+                <option value="Civil">Civil</option>
+                <option value="IT">IT</option>
+                <option value="BBA">CSECS</option>
+                <option value="BCA">Mechanical</option>
+                <option value="B.Commerce">BioTech</option>
+                <option value="B.Ed">MBA</option>
+                <option value="B.Arch">Robotics</option>
+                <option value="AI">AI</option>
+                <option value="ML">ML</option>
+                <option value="DS">DS</option>
+                <option value="B.pharma">B.pharma</option>
+                <option value="D.pharma">D.pharma</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="year"><b>Year:</b></label>
+            <select id="year" name="year" required>
+                <option value="select the studying year">Select the studying year</option>
+                <option value="1st">1st</option>
+                <option value="2nd">2nd</option>
+                <option value="3rd">3rd</option>
+                <option value="4th">4th</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="email"><b>Email:</b></label>
+            <input type="email" id="email" name="email" placeholder="Write your email address" required>
+        </div>
+        <div class="form-group">
+            <label for="phone"><b>Phone:</b></label>
+            <input type="tel" id="phone" name="phone" placeholder="Write your phone number" required>
+        </div>
+        
+        <div class="buttons">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
+</body>
+
+</html>

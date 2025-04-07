@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <nav>
+        <h1>Data Structure</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="Feedback.html">Feedback</a></li>
+        </ul>
+    </nav>
+    <div class="main">
+        <div id="box">
+            <h2 id="qbox">1) This is a Dummy question</h2>
+            <div id="option1" class="option" onclick="selectOption('a')">Option 1</div>
+            <div id="option2" class="option" onclick="selectOption('b')">Option 2</div>
+            <div id="option3" class="option" onclick="selectOption('c')">Option 3</div>
+            <div id="option4" class="option" onclick="selectOption('d')">Option 4</div>
+            <p style="color:red" class="timer">Quiz Time Left: <span id="quizTimeLeft">200</span>s</p>
+            <button class="btn" id="prevBtn" onclick="prevQuestion()">Prev</button>
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+            <button class="btn" id="skipBtn" onclick="skipQuestion()">Skip</button>
+        </div>
+        <button class="btn" id="submitBtn" onclick="submitQuiz()">Submit</button>
+    </div>
+
+    <div id="palette">
+        <h3>Question Palette</h3>
+        <p>Marked: <span id="markedCount">0</span></p>
+        <p>Remaining: <span id="remainingCount">9</span></p>
+    </div>
+
+    <footer>
+        <p>This quiz covers basics of Data Structure.</p>
+    </footer>
+
+    <script>
+        const questions = [
+            {
+                'Que': 'What is a data structure?',
+                'a': 'A programming language',
+                'b': 'A collection of algorithms',
+                'c': 'A way to store and organize data',
+                'correct': 'c'
+            },
+            {
+                'Que': 'Which data structure uses LIFO (Last In, First Out)?',
+                'a': 'Queue',
+                'b': 'Stack',
+                'c': 'Linked List',
+                'd': 'Heap',
+                'correct': 'b'
+            },
+            {
+                'Que': 'Which data structure is required for implementing recursion?',
+ 'a': 'Queue',
+ 'b': 'Stack',
+ 'c': 'Heap',
+ 'd': 'Graph',
+ 'correct': 'b'
+ },
+ {
+ 'Que': 'Which data structure is best suited for a priority queue?',
+ 'a': 'Stack',
+ 'b': 'Heap',
+ 'c': 'Queue',
+ 'd': 'Linked List',
+ 'correct': 'b'
+ },
+ {
+ 'Que': 'Which data structure is used for implementing BFS (Breadth-First Search)?',
+ 'a': 'Stack',
+ 'b': 'Queue',
+ 'c': 'Priority Queue',
+ 'd': 'Graph',
+ 'correct': 'b'
+ },
+ {
+ 'Que': 'What is the time complexity of searching in a balanced binary search tree (BST)?',
+ 'a': 'O(n)',
+ 'b': 'O(log n)',
+ 'c': 'O(n^2)',
+ 'd': 'O(1)',
+ 'correct': 'b'
+ },
+ {
+ 'Que': 'Which data structure is used for converting infix to postfix notation?',
+ 'a': 'Tree',
+ 'b': 'Branch',
+ 'c': 'Stack',
+ 'd': 'Queue',
+ 'correct': 'c'
+ },
+ {
+ 'Que': 'Which data structure follows FIFO (First In, First Out)?',
+ 'a': 'Stack',
+ 'b': 'Queue',
+ 'c': 'Graph',
+ 'd': 'Heap',
+ 'correct': 'b'
+ },
+ {
+ 'Que': 'Which of the following is NOT an application of a stack?',
+ 'a': 'Function call tracking',
+ 'b': 'Undo operation',
+ 'c': 'Breadth-first traversal',
+ 'd': 'Expression evaluation',
+ 'correct': 'c'
+ },
+ {
+ 'Que': 'Which of the following is a linear data structure?',
+ 'a': 'Graph',
+ 'b': 'Tree',
+ 'c': 'Array',
+ 'd': 'Hash Table',
+ 'correct': 'c'
+ },
+ {
+ 'Que': 'Which data structure is used in implementing a circular queue?',
+ 'a': 'Stack',
+ 'b': 'Array',
+ 'c': 'Linked List',
+ 'd': 'Both Array and Linked List',
+ 'correct': 'd'
+ },
+ {
+ 'Que': 'Which data structure is used to implement a LRU (Least Recently Used) cache?',
+ 'a': 'Stack',
+ 'b': 'Queue',
+ 'c': 'Doubly Linked List with Hash Map',
+ 'd': 'Binary Tree',
+ 'correct': 'c'
+ },
+ {
+ 'Que': 'Which of the following data structures allows insertion and deletion at both ends?',
+ 'a': 'Queue',
+ 'b': 'Deque',
+ 'c': 'Stack',
+ 'd': 'Heap',
+ 'correct': 'b'
+ },
+ {
+ 'Que': 'Which of the following is NOT an advantage of a linked list over an array?',
+ 'a': 'Dynamic size',
+ 'b': 'Efficient insertion and deletion',
+ 'c': 'Direct access to elements',
+ 'd': 'No memory wastage',
+ 'correct': 'c'
+ },
+ {
+ 'Que': 'What is the time complexity of inserting a node at the beginning of a singly linked list?',
+ 'a': 'O(1)',
+ 'b': 'O(n)',
+ 'c': 'O(log n)',
+ 'd': 'O(n log n)',
+ 'correct': 'a'
+ },
+ {
+ 'Que': 'Which data structure is used to detect a cycle in a graph?',
+ 'a': 'Queue',
+ 'b': 'Stack',
+ 'c': 'Union-Find',
+ 'd': 'Heap',
+ 'correct': 'c'
+ },
+ {
+ 'Que': 'Which tree is used in database indexing?',
+ 'a': 'Binary Tree',
+ 'b': 'B-Tree',
+ 'c': 'AVL Tree',
+ 'd': 'Heap',
+ 'correct': 'b'
+ },
+ {
+ 'Que': 'Which of the following data structures is used in hashing?',
+ 'a': 'Heap',
+ 'b': 'Graph',
+ 'c': 'Hash Table',
+ 'd': 'Tree',
+ 'correct': 'c'
+ },
+ {
+ 'Que': 'Which algorithm is used to find the shortest path in an unweighted graph?',
+ 'a': 'Dijkstra’s Algorithm',
+ 'b': 'Floyd-Warshall Algorithm',
+ 'c': 'Bellman-Ford Algorithm',
+ 'd': 'Breadth-First Search (BFS)',
+ 'correct': 'd'
+ },
+ {
+ 'Que': 'Which of the following data structures is used for implementing backtracking?',
+ 'a': 'Queue',
+ 'b': 'Stack',
+ 'c': 'Priority Queue',
+ 'd': 'Hash Table',
+ 'correct': 'b'
+    }
+            // Add all 20 questions here...
+        ];
+
+        let randomizedQuestions = questions.sort(() => Math.random() - 0.5).slice(0, 10); // Randomize and select 10 questions
+        let index = 0;
+        let total = randomizedQuestions.length;
+        let selectedAnswers = {};
+        let quizTimer;
+        let totalTime = 200; // Total time for the quiz in seconds
+
+        const qbox = document.getElementById('qbox');
+        const quizTimeLeftElem = document.getElementById('quizTimeLeft');
+        const markedCountElem = document.getElementById('markedCount');
+        const remainingCountElem = document.getElementById('remainingCount');
+
+        const loadQuestion = () => {
+            resetOptions();
+            let data = randomizedQuestions[index];
+            qbox.innerText = `${index + 1}) ${data.Que}`;
+            document.getElementById('option1').innerText = data.a;
+            document.getElementById('option2').innerText = data.b;
+            document.getElementById('option3').innerText = data.c;
+            document.getElementById('option4').innerText = data.d;
+
+            if (selectedAnswers[index]) {
+                selectOption(selectedAnswers[index]);
+            }
+            updatePalette();
+        };
+
+        const nextQuestion = () => {
+            if (index < total - 1) {
+                index++;
+                loadQuestion();
+            }
+        };
+
+        const prevQuestion = () => {
+            if (index > 0) {
+                index--;
+                loadQuestion();
+            }
+        };
+
+        const skipQuestion = () => {
+            if (index < total - 1) {
+                index++;
+                loadQuestion();
+            }
+        };
+
+        const selectOption = (option) => {
+            resetOptions();
+            selectedAnswers[index] = option;
+            document.getElementById(`option${option.charCodeAt(0) - 96}`).classList.add('selected');
+            updatePalette();
+        };
+
+        const resetOptions = () => {
+            document.querySelectorAll('.option').forEach(option => option.classList.remove('selected'));
+        };
+
+        const submitQuiz = () => {
+            clearInterval(quizTimer);
+            let correct = 0;
+            let resultHTML = `<h3>Quiz Completed!</h3><h4>You scored ${correct} / ${total}.</h4><br><h3>Correct Answers:</h3>`;
+            randomizedQuestions.forEach((q, i) => {
+                const userAnswer = selectedAnswers[i];
+                const isCorrect = userAnswer === q.correct;
+                if (isCorrect) correct++;
+                resultHTML += `<p>Q${i + 1}: ${q.Que}<br>Your Answer: ${userAnswer || 'Not Attempted'}<br>Correct Answer: ${q.correct}</p>`;
+            });
+            resultHTML += `<br>`;
+            document.getElementById("box").innerHTML = resultHTML;
+        };
+
+        const startQuizTimer = () => {
+            quizTimer = setInterval(() => {
+                totalTime--;
+                quizTimeLeftElem.innerText = totalTime;
+                if (totalTime === 0) {
+                    clearInterval(quizTimer);
+                    submitQuiz();
+                }
+            }, 1000);
+        };
+
+        const updatePalette = () => {
+            const marked = Object.keys(selectedAnswers).length;
+            markedCountElem.innerText = marked;
+            remainingCountElem.innerText = total - marked;
+        };
+
+        // Initialize quiz
+        loadQuestion();
+        startQuizTimer();
+    </script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <nav>
+        <h1>DataBase Management System</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="Feedback.html">Feedback</a></li>
+        </ul>
+    </nav>
+    <div class="main">
+        <div id="box">
+            <h2 id="qbox">1) This is a Dummy question</h2>
+            <div id="option1" class="option" onclick="selectOption('a')">Option 1</div>
+            <div id="option2" class="option" onclick="selectOption('b')">Option 2</div>
+            <div id="option3" class="option" onclick="selectOption('c')">Option 3</div>
+            <div id="option4" class="option" onclick="selectOption('d')">Option 4</div>
+            <p style="color:red" class="timer">Quiz Time Left: <span id="quizTimeLeft">200</span>s</p>
+            <button class="btn" id="prevBtn" onclick="prevQuestion()">Prev</button>
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+            <button class="btn" id="skipBtn" onclick="skipQuestion()">Skip</button>
+        </div>
+        <button class="btn" id="submitBtn" onclick="submitQuiz()">Submit</button>
+    </div>
+
+    <div id="palette">
+        <h3>Question Palette</h3>
+        <p>Marked: <span id="markedCount">0</span></p>
+        <p>Remaining: <span id="remainingCount">9</span></p>
+    </div>
+
+    <footer>
+        <p>This quiz covers basics of Data Structure.</p>
+    </footer>
+
+    <script>
+        const questions = [
+        {
+        'Que': 'Which of the following is NOT a Java keyword?',
+        'a': 'class',
+        'b': 'extends',
+        'c': 'implements',
+        'd': 'main',
+        'correct': 'd'
+    },
+    {
+        'Que': 'What is the default value of an instance variable in Java?',
+        'a': 'null',
+        'b': '0',
+        'c': 'Depends on the data type',
+        'd': 'Not assigned by default',
+        'correct': 'c'
+    },
+    {
+        'Que': 'Which data type is used to store a single character in Java?',
+        'a': 'char',
+        'b': 'string',
+        'c': 'Character',
+        'd': 'int',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which of the following is not a primitive data type in Java?',
+        'a': 'int',
+        'b': 'float',
+        'c': 'string',
+        'd': 'char',
+        'correct': 'c'
+    },
+    {
+        'Que': 'Which keyword is used to define a constant variable in Java?',
+        'a': 'final',
+        'b': 'static',
+        'c': 'const',
+        'd': 'immutable',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which of these is the correct way to declare an array in Java?',
+        'a': 'int arr = new int[10];',
+        'b': 'int arr[] = new int[10];',
+        'c': 'int arr[10];',
+        'd': 'Both a and b',
+        'correct': 'd'
+    },
+    {
+        'Que': 'Which method is called automatically when an object is garbage collected?',
+        'a': 'finalize()',
+        'b': 'destroy()',
+        'c': 'delete()',
+        'd': 'cleanup()',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which of the following access specifiers allows access only within the same class?',
+        'a': 'public',
+        'b': 'private',
+        'c': 'protected',
+        'd': 'default',
+        'correct': 'b'
+    },
+    {
+        'Que': 'What is the superclass of all classes in Java?',
+        'a': 'java.lang.Class',
+        'b': 'java.lang.Object',
+        'c': 'java.lang.String',
+        'd': 'java.util.Base',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which of the following is not a feature of Java?',
+        'a': 'Platform independent',
+        'b': 'Object-oriented',
+        'c': 'Supports multiple inheritance using classes',
+        'd': 'Supports automatic memory management',
+        'correct': 'c'
+    },
+    {
+        'Que': 'Which of these is used to implement multiple inheritance in Java?',
+        'a': 'Abstract classes',
+        'b': 'Interfaces',
+        'c': 'Both a and b',
+        'd': 'None of the above',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which of these loops is guaranteed to execute at least once?',
+        'a': 'for loop',
+        'b': 'while loop',
+        'c': 'do-while loop',
+        'd': 'None of the above',
+        'correct': 'c'
+    },
+    {
+        'Que': 'Which package contains the Random class in Java?',
+        'a': 'java.util',
+        'b': 'java.lang',
+        'c': 'java.random',
+        'd': 'java.io',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which exception is thrown when a divide-by-zero operation occurs in Java?',
+        'a': 'ArithmeticException',
+        'b': 'NumberFormatException',
+        'c': 'IOException',
+        'd': 'NullPointerException',
+        'correct': 'a'
+    },
+    {
+        'Que': 'What is the output of `System.out.println(10 + "20");`?',
+        'a': '30',
+        'b': '1020',
+        'c': 'Error',
+        'd': 'null',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which keyword is used to define a method that cannot be overridden?',
+        'a': 'final',
+        'b': 'static',
+        'c': 'private',
+        'd': 'protected',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which of the following can be used to create an object in Java?',
+        'a': 'new keyword',
+        'b': 'Class.forName()',
+        'c': 'Both a and b',
+        'd': 'None of the above',
+        'correct': 'c'
+    },
+    {
+        'Que': 'What is the return type of the `main()` method in Java?',
+        'a': 'void',
+        'b': 'int',
+        'c': 'String',
+        'd': 'None of the above',
+        'correct': 'a'
+    },
+    {
+        'Que': 'Which Java keyword is used to inherit a class?',
+        'a': 'inherit',
+        'b': 'extends',
+        'c': 'super',
+        'd': 'implements',
+        'correct': 'b'
+    },
+    {
+        'Que': 'Which method is used to compare two strings in Java?',
+        'a': 'equals()',
+        'b': '==',
+        'c': 'compareTo()',
+        'd': 'Both a and c',
+        'correct': 'd'
+    }
+        ];
+
+        let randomizedQuestions = questions.sort(() => Math.random() - 0.5).slice(0, 10); // Randomize and select 10 questions
+        let index = 0;
+        let total = randomizedQuestions.length;
+        let selectedAnswers = {};
+        let quizTimer;
+        let totalTime = 200; // Total time for the quiz in seconds
+
+        const qbox = document.getElementById('qbox');
+        const quizTimeLeftElem = document.getElementById('quizTimeLeft');
+        const markedCountElem = document.getElementById('markedCount');
+        const remainingCountElem = document.getElementById('remainingCount');
+
+        const loadQuestion = () => {
+            resetOptions();
+            let data = randomizedQuestions[index];
+            qbox.innerText = `${index + 1}) ${data.Que}`;
+            document.getElementById('option1').innerText = data.a;
+            document.getElementById('option2').innerText = data.b;
+            document.getElementById('option3').innerText = data.c;
+            document.getElementById('option4').innerText = data.d;
+
+            if (selectedAnswers[index]) {
+                selectOption(selectedAnswers[index]);
+            }
+            updatePalette();
+        };
+
+        const nextQuestion = () => {
+            if (index < total - 1) {
+                index++;
+                loadQuestion();
+            }
+        };
+
+        const prevQuestion = () => {
+            if (index > 0) {
+                index--;
+                loadQuestion();
+            }
+        };
+
+        const skipQuestion = () => {
+            if (index < total - 1) {
+                index++;
+                loadQuestion();
+            }
+        };
+
+        const selectOption = (option) => {
+            resetOptions();
+            selectedAnswers[index] = option;
+            document.getElementById(`option${option.charCodeAt(0) - 96}`).classList.add('selected');
+            updatePalette();
+        };
+
+        const resetOptions = () => {
+            document.querySelectorAll('.option').forEach(option => option.classList.remove('selected'));
+        };
+
+        const submitQuiz = () => {
+            clearInterval(quizTimer);
+            let correct = 0;
+            let resultHTML = `<h3>Quiz Completed!</h3><h4>You scored ${correct} / ${total}.</h4><br><h3>Correct Answers:</h3>`;
+            randomizedQuestions.forEach((q, i) => {
+                const userAnswer = selectedAnswers[i];
+                const isCorrect = userAnswer === q.correct;
+                if (isCorrect) correct++;
+                resultHTML += `<p>Q${i + 1}: ${q.Que}<br>Your Answer: ${userAnswer || 'Not Attempted'}<br>Correct Answer: ${q.correct}</p>`;
+            });
+            resultHTML += `<br>`;
+            document.getElementById("box").innerHTML = resultHTML;
+        };
+
+        const startQuizTimer = () => {
+            quizTimer = setInterval(() => {
+                totalTime--;
+                quizTimeLeftElem.innerText = totalTime;
+                if (totalTime === 0) {
+                    clearInterval(quizTimer);
+                    submitQuiz();
+                }
+            }, 1000);
+        };
+
+        const updatePalette = () => {
+            const marked = Object.keys(selectedAnswers).length;
+            markedCountElem.innerText = marked;
+            remainingCountElem.innerText = total - marked;
+        };
+
+        // Initialize quiz
+        loadQuestion();
+        startQuizTimer();
+    </script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <nav>
+        <h1>Data Structure</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="Feedback.html">Feedback</a></li>
+        </ul>
+    </nav>
+    <div class="main">
+        <div id="box">
+            <h2 id="qbox">1) This is a Dummy question</h2>
+            <div id="option1" class="option" onclick="selectOption('a')">Option 1</div>
+            <div id="option2" class="option" onclick="selectOption('b')">Option 2</div>
+            <div id="option3" class="option" onclick="selectOption('c')">Option 3</div>
+            <div id="option4" class="option" onclick="selectOption('d')">Option 4</div>
+            <p style="color:red" class="timer">Quiz Time Left: <span id="quizTimeLeft">200</span>s</p>
+            <button class="btn" id="prevBtn" onclick="prevQuestion()">Prev</button>
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+            <button class="btn" id="skipBtn" onclick="skipQuestion()">Skip</button>
+        </div>
+        <button class="btn" id="submitBtn" onclick="submitQuiz()">Submit</button>
+    </div>
+
+    <div id="palette">
+        <h3>Question Palette</h3>
+        <div id="questionNumbers"></div>
+        <p>Marked: <span id="markedCount">0</span></p>
+        <p>Remaining: <span id="remainingCount">9</span></p>
+    </div>
+
+    <footer>
+        <p>This quiz covers basics of Data Structure.</p>
+    </footer>
+
+    <script>
+        const questions = [
+            {
+                'Que': 'What is a data structure?',
+                'a': 'A programming language',
+                'b': 'A collection of algorithms',
+                'c': 'A way to store and organize data',
+                'correct': 'c'
+            },
+            {
+                'Que': 'Which data structure uses LIFO (Last In, First Out)?',
+                'a': 'Queue',
+                'b': 'Stack',
+                'c': 'Linked List',
+                'd': 'Heap',
+                'correct': 'b'
+            },
+            // Add all 20 questions here...
+        ];
+
+        let randomizedQuestions = questions.sort(() => Math.random() - 0.5).slice(0, 10); // Randomize and select 10 questions
+        let index = 0;
+        let total = randomizedQuestions.length;
+        let selectedAnswers = {};
+        let quizTimer;
+        let totalTime = 200; // Total time for the quiz in seconds
+
+        const qbox = document.getElementById('qbox');
+        const quizTimeLeftElem = document.getElementById('quizTimeLeft');
+        const markedCountElem = document.getElementById('markedCount');
+        const remainingCountElem = document.getElementById('remainingCount');
+        const questionNumbersElem = document.getElementById('questionNumbers');
+
+        const loadQuestion = () => {
+            resetOptions();
+            let data = randomizedQuestions[index];
+            qbox.innerText = `${index + 1}) ${data.Que}`;
+            document.getElementById('option1').innerText = data.a;
+            document.getElementById('option2').innerText = data.b;
+            document.getElementById('option3').innerText = data.c;
+            document.getElementById('option4').innerText = data.d;
+
+            if (selectedAnswers[index]) {
+                selectOption(selectedAnswers[index]);
+            }
+            updatePalette();
+        };
+
+        const nextQuestion = () => {
+            if (index < total - 1) {
+                index++;
+                loadQuestion();
+            }
+        };
+
+        const prevQuestion = () => {
+            if (index > 0) {
+                index--;
+                loadQuestion();
+            }
+        };
+
+        const skipQuestion = () => {
+            if (index < total - 1) {
+                index++;
+                loadQuestion();
+            }
+        };
+
+        const selectOption = (option) => {
+            resetOptions();
+            selectedAnswers[index] = option;
+            document.getElementById(`option${option.charCodeAt(0) - 96}`).classList.add('selected');
+            updatePalette();
+        };
+
+        const resetOptions = () => {
+            document.querySelectorAll('.option').forEach(option => option.classList.remove('selected'));
+        };
+
+        const submitQuiz = () => {
+            clearInterval(quizTimer);
+            let correct = 0;
+            let resultHTML = `<h3>Quiz Completed!</h3><h4>You scored ${correct} / ${total}.</h4><br><h3>Correct Answers:</h3>`;
+            randomizedQuestions.forEach((q, i) => {
+                const userAnswer = selectedAnswers[i];
+                const isCorrect = userAnswer === q.correct;
+                if (isCorrect) correct++;
+                resultHTML += `<p>Q${i + 1}: ${q.Que}<br>Your Answer: ${userAnswer || 'Not Attempted'}<br>Correct Answer: ${q.correct}</p>`;
+            });
+            resultHTML += `<br><h3><a href="Feedback.html">Feedback</a></h3>`;
+            document.getElementById("box").innerHTML = resultHTML;
+        };
+
+        const startQuizTimer = () => {
+            quizTimer = setInterval(() => {
+                totalTime--;
+                quizTimeLeftElem.innerText = totalTime;
+                if (totalTime === 0) {
+                    clearInterval(quizTimer);
+                    submitQuiz();
+                }
+            }, 1000);
+        };
+
+        const updatePalette = () => {
+            const marked = Object.keys(selectedAnswers).length;
+            markedCountElem.innerText = marked;
+            remainingCountElem.innerText = total - marked;
+
+            // Update question numbers in the palette
+            questionNumbersElem.innerHTML = '';
+            randomizedQuestions.forEach((_, i) => {
+                const btn = document.createElement('div');
+                btn.className = `q-btn ${i === index ? 'active' : ''}`;
+                btn.innerText = `Q${i + 1}`;
+                btn.onclick = () => {
+                    index = i;
+                    loadQuestion();
+                };
+                questionNumbersElem.appendChild(btn);
+            });
+        };
+
+        // Initialize quiz
+        loadQuestion();
+        startQuizTimer();
+    </script>
+</body>
+</html>
